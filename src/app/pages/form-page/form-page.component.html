@@ -1,0 +1,20 @@
+<div class="form-background">
+  <div class="card chatbox-card">
+    <div class="logo-container">
+      <img src="assets/Logo.png" alt="Logo" class="logo-img" />
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="sendToApi()" autocomplete="off">
+        <div class="mb-3 chatbox-input-wrapper">
+          <label for="userInput" class="form-label visually-hidden">Texte</label>
+          <input id="userInput" [(ngModel)]="userInput" name="userInput" class="form-control chatbox-input" placeholder="Crée ta propre BD en une phrase !" required />
+          <button type="submit" class="btn chatbox-send" [disabled]="loading">
+            <img src="assets/flecheDroite.png" alt="Envoyer" class="send-arrow-img" />
+          </button>
+        </div>
+      </form>
+      <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+      <div *ngIf="loading" class="mt-3">Chargement...</div>
+    </div>
+  </div>
+</div>

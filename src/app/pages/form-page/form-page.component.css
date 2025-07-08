@@ -1,0 +1,62 @@
+.chatbox-send {
+  background: #fff;
+  border: none;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
+  color: var(--text-main);
+  padding: 12px 28px;
+  border-radius: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.chatbox-send:hover {
+  background: var(--hover);
+  box-shadow: 0 6px 24px 0 rgba(0,0,0,0.13);
+}
+
+.send-arrow-img {
+  width: 36px;
+  height: 36px;
+  margin-left: 0;
+}
+
+.logo-img {
+  width: 180px;
+  height: 180px;
+}
+
+.chatbox-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #fffbe6;
+  border-radius: 24px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.chatbox-input-wrapper:focus-within {
+  border-color: #ffe066;
+}
+
+.chatbox-input {
+  min-width: 0;
+  width: 100%;
+  min-height: 80px;
+  font-size: 1.3rem;
+  padding: 18px 24px;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.chatbox-input:focus {
+  outline: none;
+  box-shadow: none;
+  background: #fffde7;
+  border: none;
+}

@@ -1,0 +1,22 @@
+<p>image-page works!</p>
+<div class="image-background">
+  <button class="arrow-btn" routerLink="/" title="Retour à l'accueil">
+    <img src="assets/flecheGauche.png" alt="Retour" class="arrow-img" />
+  </button>
+  <div class="media-container">
+    <ng-container *ngIf="imageUrl; else noImage">
+      <img [src]="imageUrl" class="full-media" alt="Image générée" />
+    </ng-container>
+    <ng-template #noImage>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <video class="full-media loading-video" autoplay loop muted>
+          <source src="assets/loading.mp4" type="video/mp4" />
+          Votre navigateur ne supporte pas la vidéo.
+        </video>
+        <div class="loading-row">
+          <img src="assets/loadingdots.gif" alt="Chargement..." class="loading-gif" />
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

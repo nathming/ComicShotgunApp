@@ -1,0 +1,157 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --base-bg: #fffbe6;         /* Jaune très pâle, lumineux */
+  --accent: #ffe066;           /* Jaune pastel, accent doux */
+  --vivid: #ffd600;            /* Jaune vif, pour attirer l'attention */
+  --hover: #fff082;            /* Jaune clair pour hover */
+  --text-main: #232323;        /* Noir adouci pour le texte */
+}
+
+body {
+  background: var(--base-bg);
+  color: var(--text-main);
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+html {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-main);
+}
+
+.btn-primary:hover {
+  background: var(--hover);
+  border-color: var(--hover);
+  color: var(--text-main);
+}
+
+.btn-primary:focus, .btn-primary:active {
+  background: var(--hover) !important;
+  border-color: var(--hover) !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.btn-primary:active {
+  filter: brightness(0.95);
+}
+
+.btn-vivid {
+  background: var(--vivid);
+  border-color: var(--vivid);
+  color: var(--text-main);
+}
+
+.form-background {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  background: url('assets/Background.png') center/cover no-repeat fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.chatbox-card {
+  max-width: 900px;
+  width: 90vw;
+  margin: 40px auto;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.chatbox-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #fffbe6;
+  border-radius: 24px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.03);
+}
+
+.chatbox-input {
+  min-width: 0;
+  width: 100%;
+  min-height: 80px;
+  font-size: 1.3rem;
+  padding: 18px 24px;
+  border: none;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.chatbox-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent);
+  background: #fffde7;
+  border: none;
+}
+
+.chatbox-send {
+  margin-left: 12px;
+  border-radius: 18px;
+  padding: 8px 20px;
+  font-weight: 600;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -56px;
+  margin-bottom: 12px;
+  z-index: 2;
+  position: relative;
+}
+
+.logo-img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  background: #fff;
+  border: 4px solid #fffbe6;
+}

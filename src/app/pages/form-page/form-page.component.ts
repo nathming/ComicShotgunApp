@@ -14,6 +14,8 @@ export class FormPageComponent {
   userInput = '';
   loading = false;
   error = '';
+  paramImg = 'assets/ParametreStatic.png';
+  sendArrowImg = 'assets/flecheDroiteStatic.png';
 
   constructor(private router: Router) {}
 
@@ -37,5 +39,21 @@ export class FormPageComponent {
     } finally {
       this.loading = false;
     }
+  }
+
+  onParamHover() {
+    this.paramImg = 'assets/ParametreAnim.gif';
+  }
+
+  onParamLeave() {
+    this.paramImg = 'assets/ParametreStatic.png';
+  }
+
+  onSendHover() {
+    this.sendArrowImg = 'assets/flecheDroiteAnime.gif';
+  }
+
+  onSendLeave() {
+    this.sendArrowImg = 'assets/flecheDroiteStatic.png';
   }
 }

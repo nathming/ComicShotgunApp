@@ -1,0 +1,23 @@
+/* Animation paramètre bouton */
+.param-btn {
+  background: #fff;
+  border: none;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
+  color: var(--text-main);
+  padding: 12px 28px;
+  border-radius: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, background 0.2s;
+  margin-right: 12px;
+}
+.param-btn:hover {
+  background: var(--hover);
+  box-shadow: 0 6px 24px 0 rgba(0,0,0,0.13);
+}
+.param-gif-img {
+  width: 36px;
+  height: 36px;
+}

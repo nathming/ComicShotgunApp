@@ -1,3 +1,5 @@
+@import './param-btn.css';
+
 .chatbox-send {
   background: #fff;
   border: none;
@@ -59,4 +61,27 @@
   box-shadow: none;
   background: #fffde7;
   border: none;
+}
+
+.row-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.bd-label {
+  font-size: 1.3rem;
+  color: #444;
+  font-weight: 500;
+  padding: 18px 24px;
+  background: #fffbe6;
+  border-radius: 18px;
+  margin-right: 16px;
+  flex: 1;
+}
+.btns-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
 }

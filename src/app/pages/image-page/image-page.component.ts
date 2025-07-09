@@ -32,7 +32,7 @@ export class ImagePageComponent {
     }
     try {
       // Appel /comic-json
-      const jsonRes = await fetch('http://localhost:3000/comic-json', {
+      const jsonRes = await fetch('http://10.74.8.226:3000/comic-json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })
@@ -40,7 +40,7 @@ export class ImagePageComponent {
       if (!jsonRes.ok) throw new Error('Erreur API /comic-json');
       const cases = await jsonRes.json();
       // Appel /comic-image
-      const imgRes = await fetch('http://localhost:3000/comic-image', {
+      const imgRes = await fetch('http://10.74.8.226:3000/comic-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cases: cases.cases })
@@ -57,7 +57,7 @@ export class ImagePageComponent {
     } catch (e) {
       this.loading = false;
       this.showImage = true;
-      this.imageUrl = 'assets/Logo.png';
+      this.imageUrl = 'assets/erreur-404.gif';
     }
   }
 

@@ -1,6 +1,24 @@
 <div class="home-background">
-  <button class="home-generate-btn" (click)="goToForm()">
-    Générer votre propre histoire !
-    <img src="assets/flecheDroiteAnime.gif" alt="Flèche animée" class="arrow-anim" />
-  </button>
+    <div class="home-content">
+        <div class="home-logo-container">
+            <img src="assets/Logo.png" alt="Logo" class="home-logo-img" />
+        </div>
+        <button class="home-generate-btn" (click)="goToForm()">
+            Générer votre propre histoire !
+            <img src="assets/flecheDroiteAnime.gif" alt="Flèche animée" class="arrow-anim" />
+        </button> 
+    </div>
+    <div>
+        <p class="home-instructions" *ngIf="showInfo">
+            Entrez une phrase pour décrire la BD que vous souhaitez créer.<br>
+            Cliquez sur le bouton pour générer votre histoire illustrée.<br>
+            Téléchargez ou partagez votre création en un clic !
+        </p>
+        <div class="info-btn-container">
+            <button class="info-btn" (click)="toggleInfo()">
+                <img src="assets/info.gif" alt="Info" />
+            </button>
+        </div>
+    </div>
 </div>
+

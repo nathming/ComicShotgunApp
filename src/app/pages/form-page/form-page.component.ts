@@ -16,6 +16,7 @@ export class FormPageComponent {
   error = '';
   paramImg = 'assets/ParametreStatic.png';
   sendArrowImg = 'assets/flecheDroiteStatic.png';
+  homeImg = 'assets/AcceuilStatic.png';
 
   constructor(private router: Router) {}
 
@@ -39,5 +40,17 @@ export class FormPageComponent {
 
   onSendLeave() {
     this.sendArrowImg = 'assets/flecheDroiteStatic.png';
+  }
+
+  onHomeHover() {
+    this.homeImg = 'assets/AcceuilAnime.gif';
+  }
+
+  onHomeLeave() {
+    this.homeImg = 'assets/AcceuilStatic.png';
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
   }
 }

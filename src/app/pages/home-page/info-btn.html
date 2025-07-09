@@ -1,0 +1,11 @@
+<!-- Bouton info en bas à droite -->
+<div class="info-btn-container">
+  <button class="info-btn" (click)="toggleInfo()">
+      <img src="assets/info.gif" alt="Info" />
+  </button>
+  <div class="info-tooltip" *ngIf="showInfo">
+    <span>
+      Ceci est une bulle d'information personnalisée !
+    </span>
+  </div>
+</div>

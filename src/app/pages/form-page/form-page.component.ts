@@ -20,25 +20,9 @@ export class FormPageComponent {
   constructor(private router: Router) {}
 
   async sendToApi() {
-    this.loading = true;
-    this.error = '';
-    try {
-      // Remplace l'URL par celle de ton API
-      const response = await fetch('https://api.example.com/generate-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: this.userInput })
-      });
-      if (!response.ok) throw new Error('Erreur API');
-      const data = await response.json();
-      // Stocke l'URL de l'image dans le localStorage (ou autre méthode de partage)
-      localStorage.setItem('imageUrl', data.imageUrl);
-      this.router.navigate(['/image']);
-    } catch (e: any) {
-      this.error = e.message || 'Erreur inconnue';
-    } finally {
-      this.loading = false;
-    }
+    // On stocke juste le prompt et on navigue vers /image
+    localStorage.setItem('comicPrompt', this.userInput);
+    this.router.navigate(['/image']);
   }
 
   onParamHover() {

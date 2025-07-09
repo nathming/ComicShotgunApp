@@ -16,16 +16,35 @@
         </div>
       </div>
     </ng-container>
-    <!-- Transition -->
-    <ng-container *ngIf="showTransition">
-      <video class="full-media transition-video" autoplay muted>
-        <source src="assets/transition.mp4" type="video/mp4" />
-        Votre navigateur ne supporte pas la vidéo.
-      </video>
-    </ng-container>
-    <!-- Image -->
+    <!-- Image avec effet pop + bouton télécharger -->
     <ng-container *ngIf="showImage">
-      <img [src]="imageUrl" class="full-media" alt="Image générée" />
+      <div class="image-pop-container">
+        <div class="image-socials-row">
+          <img [src]="imageUrl" class="full-media pop-effect" alt="Image générée" />
+          <div class="btns-col">
+          <button class="download-btn"
+                  (click)="downloadImage()"
+                  (mouseenter)="onTeleHover()"
+                  (mouseleave)="onTeleLeave()">
+            <img [src]="teleImg" alt="Télécharger" class="icon-btn-img" />
+          </button>
+          <button class="partager-btn"
+                  (mouseenter)="onPartagerHover()"
+                  (mouseleave)="onPartagerLeave()"
+                  (click)="toggleSocials()">
+            <img [src]="partagerImg" alt="Partager" class="icon-btn-img" />
+          </button>
+        </div>
+          <div *ngIf="showSocials" class="socials-col-right">
+            <button class="social-btn" (click)="shareOnInstagram()">
+              <img src="assets/instagram.png" alt="Instagram" class="icon-btn-img" />
+            </button>
+            <button class="social-btn" (click)="shareOnReddit()">
+              <img src="assets/reddit.png" alt="Reddit" class="icon-btn-img" />
+            </button>
+          </div>
+        </div>
+      </div>
     </ng-container>
   </div>
 </div>

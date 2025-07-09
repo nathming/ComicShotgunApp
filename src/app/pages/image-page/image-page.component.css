@@ -108,3 +108,53 @@
   /* Rotation pour passer de paysage à portrait si besoin */
   transform: rotate(90deg);
 }
+
+.image-pop-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.image-socials-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.socials-col-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-left: 24px;
+  animation: fadeInSocials 0.25s;
+}
+.icon-btn-img {
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+.download-btn, .partager-btn, .social-btn {
+  padding: 0;
+  border-radius: 16px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.btns-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+}
+@keyframes fadeInSocials {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

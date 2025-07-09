@@ -1,7 +1,8 @@
 <p>image-page works!</p>
 <div class="image-background">
-  <button class="arrow-btn" routerLink="/form" title="Retour à l'accueil">
-    <img src="assets/flecheGauche.png" alt="Retour" class="arrow-img" />
+  <button class="arrow-btn" routerLink="/form" title="Retour à l'accueil"
+    (mouseenter)="onArrowHover()" (mouseleave)="onArrowLeave()">
+    <img [src]="arrowImg" alt="Retour" class="arrow-img" />
   </button>
   <div class="media-container">
     <!-- Loader (vidéo + gif) -->

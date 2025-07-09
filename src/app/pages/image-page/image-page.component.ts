@@ -15,6 +15,7 @@ export class ImagePageComponent {
   showImage = false;
   teleImg = 'assets/TeleStatic.png';
   partagerImg = 'assets/PartagerStatic.png';
+  arrowImg = 'assets/en-arriereStatic.png';
   showSocials = false;
 
   async ngOnInit() {
@@ -27,7 +28,7 @@ export class ImagePageComponent {
     if (!prompt) {
       this.loading = false;
       this.showImage = true;
-      this.imageUrl = 'assets/Logo.png';
+      this.imageUrl = 'assets/erreur-404.gif';
       return;
     }
     try {
@@ -75,6 +76,14 @@ export class ImagePageComponent {
 
   onPartagerLeave() {
     this.partagerImg = 'assets/PartagerStatic.png';
+  }
+
+  onArrowHover() {
+    this.arrowImg = 'assets/en-arriereAnime.gif';
+  }
+
+  onArrowLeave() {
+    this.arrowImg = 'assets/en-arriereStatic.png';
   }
 
   downloadImage() {

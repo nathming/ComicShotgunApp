@@ -9,14 +9,14 @@
         </button> 
     </div>
     <div>
-        <p class="home-instructions" *ngIf="showInfo">
-            Entrez une phrase pour décrire la BD que vous souhaitez créer.<br>
-            Cliquez sur le bouton pour générer votre histoire illustrée.<br>
-            Téléchargez ou partagez votre création en un clic !
-        </p>
         <div class="info-btn-container">
             <button class="info-btn" (click)="toggleInfo()">
                 <img src="assets/info.gif" alt="Info" />
+                <div class="home-instructions-tooltip" *ngIf="showInfo">
+                  Entrez une phrase pour décrire la BD que vous souhaitez créer.<br>
+                  Cliquez sur le bouton pour générer votre histoire illustrée.<br>
+                  Téléchargez ou partagez votre création en un clic !
+                </div>
             </button>
         </div>
     </div>

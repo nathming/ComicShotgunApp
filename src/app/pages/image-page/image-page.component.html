@@ -43,9 +43,6 @@
             <button class="social-btn" (mouseenter)="onMailHover()" (mouseleave)="onMailLeave()" (click)="openMailPopup()">
               <img [src]="mailImg" alt="Mail" class="icon-btn-img" />
             </button>
-            <button class="social-btn" (mouseenter)="onMmsHover()" (mouseleave)="onMmsLeave()" (click)="openMmsPopup()">
-              <img [src]="mmsImg" alt="MMS" class="icon-btn-img" />
-            </button>
           </div>
         </div>
       </div>
@@ -64,19 +61,5 @@
     </div>
     <div *ngIf="mailError" class="mail-error">{{mailError}}</div>
     <div *ngIf="mailSuccess" class="mail-success">Message envoyé !</div>
-  </div>
-</div>
-
-<!-- Popup MMS -->
-<div class="mail-popup-backdrop" *ngIf="showMmsPopup">
-  <div class="mail-popup">
-    <h3>Envoyer l'image par MMS</h3>
-    <input type="tel" [(ngModel)]="mmsPhoneNumber" placeholder="Numéro de téléphone" class="popup-input" />
-    <div class="mail-popup-actions">
-      <button (click)="sendMms()">Envoyer</button>
-      <button (click)="closeMmsPopup()">Annuler</button>
-    </div>
-    <div *ngIf="mmsError" class="mail-error">{{mmsError}}</div>
-    <div *ngIf="mmsSuccess" class="mail-success">MMS envoyé !</div>
   </div>
 </div>

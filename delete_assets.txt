@@ -1,0 +1,3 @@
+Suppression des fichiers inutilisés :
+- src/assets/ParametreStatic.png
+- src/assets/ParametreAnim.gif

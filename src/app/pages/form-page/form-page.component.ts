@@ -14,7 +14,6 @@ export class FormPageComponent {
   userInput = '';
   loading = false;
   error = '';
-  paramImg = 'assets/ParametreStatic.png';
   sendArrowImg = 'assets/flecheDroiteStatic.png';
   homeImg = 'assets/AcceuilStatic.png';
 
@@ -24,14 +23,6 @@ export class FormPageComponent {
     // On stocke juste le prompt et on navigue vers /image
     localStorage.setItem('comicPrompt', this.userInput);
     this.router.navigate(['/image']);
-  }
-
-  onParamHover() {
-    this.paramImg = 'assets/ParametreAnim.gif';
-  }
-
-  onParamLeave() {
-    this.paramImg = 'assets/ParametreStatic.png';
   }
 
   onSendHover() {

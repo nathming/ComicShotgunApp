@@ -6,10 +6,10 @@
     <div class="card-body">
       <form (ngSubmit)="sendToApi()" autocomplete="off">
         <div class="mb-3 chatbox-input-wrapper">
-          <button type="button" class="btn param-btn"
+          <!-- <button type="button" class="btn param-btn"
                   (mouseenter)="onParamHover()" (mouseleave)="onParamLeave()">
             <img [src]="paramImg" alt="Paramètres" class="param-gif-img" />
-          </button>
+          </button> -->
           <label for="userInput" class="form-label visually-hidden">Texte</label>
           <input id="userInput" [(ngModel)]="userInput" name="userInput" class="form-control chatbox-input" placeholder="Crée ta propre BD en une phrase !" required />
           <button type="submit" class="btn chatbox-send" [disabled]="loading"

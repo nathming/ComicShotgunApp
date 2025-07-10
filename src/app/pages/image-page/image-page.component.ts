@@ -220,12 +220,23 @@ export class ImagePageComponent {
       return;
     }
     try {
+      // 1. Récupère le blob de l'image
+      const response = await fetch(this.imageUrl);
+      let blob = await response.blob();
+      // 2. Si > 5 Mo, compresse en JPEG
+      if (blob.size > 5 * 1024 * 1024) {
+        const img = await this.blobToImage(blob);
+        blob = await this.compressImage(img, 0.8, 5 * 1024 * 1024);
+      }
+      // 3. Convertit en base64
+      const base64 = await this.blobToBase64(blob);
+      // 4. Envoie à l'API
       const res = await fetch('http://10.74.8.226:3000/send-sms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           to: this.mmsPhoneNumber,
-          imageUrl: this.imageUrl
+          imageBase64: base64
         })
       });
       if (!res.ok) throw new Error('Erreur lors de l\'envoi du MMS');
@@ -234,5 +245,57 @@ export class ImagePageComponent {
     } catch (e) {
       this.mmsError = 'Erreur lors de l\'envoi du MMS.';
     }
+  }
+
+  private blobToImage(blob: Blob): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve(img);
+      };
+      img.onerror = reject;
+      img.src = url;
+    });
+  }
+
+  private compressImage(img: HTMLImageElement, quality: number, maxSize: number): Promise<Blob> {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx!.drawImage(img, 0, 0);
+      let q = quality;
+      let blob: Blob;
+      const tryCompress = () => {
+        canvas.toBlob((b) => {
+          if (!b) return resolve(canvasToBlob(canvas));
+          if (b.size <= maxSize || q < 0.3) return resolve(b);
+          q -= 0.1;
+          canvas.toBlob(tryCompress, 'image/jpeg', q);
+        }, 'image/jpeg', q);
+      };
+      tryCompress();
+    });
+    function canvasToBlob(canvas: HTMLCanvasElement): Blob {
+      const data = canvas.toDataURL('image/jpeg', 0.7);
+      const arr = data.split(',');
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) u8arr[n] = bstr.charCodeAt(n);
+      return new Blob([u8arr], { type: 'image/jpeg' });
+    }
+  }
+
+  private blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   }
 }

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-image-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './image-page.component.html',
   styleUrl: './image-page.component.css'
 })
@@ -16,7 +17,13 @@ export class ImagePageComponent {
   teleImg = 'assets/TeleStatic.png';
   partagerImg = 'assets/PartagerStatic.png';
   arrowImg = 'assets/en-arriereStatic.png';
+  instaImg = 'assets/partage/InstaStatic.png';
+  mailImg = 'assets/partage/EmailStatic.png';
   showSocials = false;
+  showMailPopup = false;
+  mailAddress = '';
+  mailError = '';
+  mailSuccess = false;
 
   async ngOnInit() {
     // 1. Affiche le loader
@@ -86,6 +93,22 @@ export class ImagePageComponent {
     this.arrowImg = 'assets/en-arriereStatic.png';
   }
 
+  onInstaHover() {
+    this.instaImg = 'assets/partage/InstaAnime.gif';
+  }
+
+  onInstaLeave() {
+    this.instaImg = 'assets/partage/InstaStatic.png';
+  }
+
+  onMailHover() {
+    this.mailImg = 'assets/partage/EmailAnim.gif';
+  }
+
+  onMailLeave() {
+    this.mailImg = 'assets/partage/EmailStatic.png';
+  }
+
   downloadImage() {
     if (!this.imageUrl) return;
     const a = document.createElement('a');
@@ -106,5 +129,45 @@ export class ImagePageComponent {
 
   toggleSocials() {
     this.showSocials = !this.showSocials;
+  }
+
+  openMailPopup() {
+    this.showMailPopup = true;
+    this.mailAddress = '';
+    this.mailError = '';
+    this.mailSuccess = false;
+  }
+
+  closeMailPopup() {
+    this.showMailPopup = false;
+    this.mailAddress = '';
+    this.mailError = '';
+    this.mailSuccess = false;
+  }
+
+  async sendMail() {
+    this.mailError = '';
+    this.mailSuccess = false;
+    if (!this.mailAddress || !this.mailAddress.match(/^\S+@\S+\.\S+$/)) {
+      this.mailError = 'Adresse mail invalide.';
+      return;
+    }
+    // Envoi de l'image par mail : nécessite un backend ou service tiers
+    // Exemple d'appel à un endpoint fictif /send-mail
+    try {
+      const res = await fetch('http://10.74.8.226:3000/send-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: this.mailAddress,
+          imageUrl: this.imageUrl // ou envoyer le blob/base64 selon backend
+        })
+      });
+      if (!res.ok) throw new Error('Erreur lors de l\'envoi du mail');
+      this.mailSuccess = true;
+      setTimeout(() => this.closeMailPopup(), 1500);
+    } catch (e) {
+      this.mailError = 'Erreur lors de l\'envoi du mail.';
+    }
   }
 }

@@ -37,15 +37,29 @@
           </button>
         </div>
           <div *ngIf="showSocials" class="socials-col-right">
-            <button class="social-btn" (click)="shareOnInstagram()">
-              <img src="assets/instagram.png" alt="Instagram" class="icon-btn-img" />
+            <button class="social-btn" (mouseenter)="onInstaHover()" (mouseleave)="onInstaLeave()" (click)="shareOnInstagram()">
+              <img [src]="instaImg" alt="Instagram" class="icon-btn-img" />
             </button>
-            <button class="social-btn" (click)="shareOnReddit()">
-              <img src="assets/reddit.png" alt="Reddit" class="icon-btn-img" />
+            <button class="social-btn" (mouseenter)="onMailHover()" (mouseleave)="onMailLeave()" (click)="openMailPopup()">
+              <img [src]="mailImg" alt="Mail" class="icon-btn-img" />
             </button>
           </div>
         </div>
       </div>
     </ng-container>
+  </div>
+</div>
+
+<!-- Popup mail -->
+<div class="mail-popup-backdrop" *ngIf="showMailPopup">
+  <div class="mail-popup">
+    <h3>Envoyer l'image par mail</h3>
+    <input type="email" [(ngModel)]="mailAddress" placeholder="Adresse mail" />
+    <div class="mail-popup-actions">
+      <button (click)="sendMail()">Envoyer</button>
+      <button (click)="closeMailPopup()">Annuler</button>
+    </div>
+    <div *ngIf="mailError" class="mail-error">{{mailError}}</div>
+    <div *ngIf="mailSuccess" class="mail-success">Mail envoyé !</div>
   </div>
 </div>

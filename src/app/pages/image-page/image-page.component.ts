@@ -19,11 +19,17 @@ export class ImagePageComponent {
   arrowImg = 'assets/en-arriereStatic.png';
   instaImg = 'assets/partage/InstaStatic.png';
   mailImg = 'assets/partage/EmailStatic.png';
+  mmsImg = 'assets/partage/MMSStatic.png';
   showSocials = false;
   showMailPopup = false;
+  showMmsPopup = false;
   mailAddress = '';
+  phoneNumber = '';
+  mmsPhoneNumber = '';
   mailError = '';
+  mmsError = '';
   mailSuccess = false;
+  mmsSuccess = false;
 
   async ngOnInit() {
     // 1. Affiche le loader
@@ -109,6 +115,14 @@ export class ImagePageComponent {
     this.mailImg = 'assets/partage/EmailStatic.png';
   }
 
+  onMmsHover() {
+    this.mmsImg = 'assets/partage/MMSAnime.gif';
+  }
+
+  onMmsLeave() {
+    this.mmsImg = 'assets/partage/MMSStatic.png';
+  }
+
   downloadImage() {
     if (!this.imageUrl) return;
     const a = document.createElement('a');
@@ -145,29 +159,80 @@ export class ImagePageComponent {
     this.mailSuccess = false;
   }
 
-  async sendMail() {
+  openMmsPopup() {
+    this.showMmsPopup = true;
+    this.mmsPhoneNumber = '';
+    this.mmsError = '';
+    this.mmsSuccess = false;
+  }
+
+  closeMmsPopup() {
+    this.showMmsPopup = false;
+    this.mmsPhoneNumber = '';
+    this.mmsError = '';
+    this.mmsSuccess = false;
+  }
+
+  async sendMailOrSms() {
     this.mailError = '';
     this.mailSuccess = false;
-    if (!this.mailAddress || !this.mailAddress.match(/^\S+@\S+\.\S+$/)) {
-      this.mailError = 'Adresse mail invalide.';
+    const hasMail = this.mailAddress && this.mailAddress.match(/^\S+@\S+\.\S+$/);
+    const hasPhone = this.phoneNumber && this.phoneNumber.match(/^\+?\d{8,15}$/);
+    if (!hasMail && !hasPhone) {
+      this.mailError = 'Veuillez renseigner un mail ou un numéro.';
       return;
     }
-    // Envoi de l'image par mail : nécessite un backend ou service tiers
-    // Exemple d'appel à un endpoint fictif /send-mail
     try {
-      const res = await fetch('http://10.74.8.226:3000/send-mail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: this.mailAddress,
-          imageUrl: this.imageUrl // ou envoyer le blob/base64 selon backend
-        })
-      });
-      if (!res.ok) throw new Error('Erreur lors de l\'envoi du mail');
+      if (hasMail) {
+        const res = await fetch('http://10.74.8.226:3000/send-mail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: this.mailAddress,
+            imageUrl: this.imageUrl
+          })
+        });
+        if (!res.ok) throw new Error('Erreur lors de l\'envoi du mail');
+      }
+      if (hasPhone) {
+        const res = await fetch('http://10.74.8.226:3000/send-sms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: this.phoneNumber,
+            imageUrl: this.imageUrl
+          })
+        });
+        if (!res.ok) throw new Error('Erreur lors de l\'envoi du SMS');
+      }
       this.mailSuccess = true;
       setTimeout(() => this.closeMailPopup(), 1500);
     } catch (e) {
-      this.mailError = 'Erreur lors de l\'envoi du mail.';
+      this.mailError = 'Erreur lors de l\'envoi.';
+    }
+  }
+
+  async sendMms() {
+    this.mmsError = '';
+    this.mmsSuccess = false;
+    if (!this.mmsPhoneNumber || !this.mmsPhoneNumber.match(/^\+?\d{8,15}$/)) {
+      this.mmsError = 'Numéro invalide.';
+      return;
+    }
+    try {
+      const res = await fetch('http://10.74.8.226:3000/send-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: this.mmsPhoneNumber,
+          imageUrl: this.imageUrl
+        })
+      });
+      if (!res.ok) throw new Error('Erreur lors de l\'envoi du MMS');
+      this.mmsSuccess = true;
+      setTimeout(() => this.closeMmsPopup(), 1500);
+    } catch (e) {
+      this.mmsError = 'Erreur lors de l\'envoi du MMS.';
     }
   }
 }

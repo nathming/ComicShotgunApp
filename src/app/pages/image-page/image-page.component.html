@@ -56,7 +56,7 @@
     <h3>Envoyer l'image</h3>
     <input type="email" [(ngModel)]="mailAddress" placeholder="Adresse mail" class="popup-input" />
     <div class="mail-popup-actions">
-      <button (click)="sendMailOrSms()">Envoyer</button>
+      <button (click)="sendMail()">Envoyer</button>
       <button (click)="closeMailPopup()">Annuler</button>
     </div>
     <div *ngIf="mailError" class="mail-error">{{mailError}}</div>

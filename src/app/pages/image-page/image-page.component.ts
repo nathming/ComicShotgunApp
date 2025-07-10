@@ -22,14 +22,10 @@ export class ImagePageComponent {
   mmsImg = 'assets/partage/MMSStatic.png';
   showSocials = false;
   showMailPopup = false;
-  showMmsPopup = false;
   mailAddress = '';
   phoneNumber = '';
-  mmsPhoneNumber = '';
   mailError = '';
-  mmsError = '';
   mailSuccess = false;
-  mmsSuccess = false;
 
   async ngOnInit() {
     // 1. Affiche le loader
@@ -115,14 +111,6 @@ export class ImagePageComponent {
     this.mailImg = 'assets/partage/EmailStatic.png';
   }
 
-  onMmsHover() {
-    this.mmsImg = 'assets/partage/MMSAnime.gif';
-  }
-
-  onMmsLeave() {
-    this.mmsImg = 'assets/partage/MMSStatic.png';
-  }
-
   downloadImage() {
     if (!this.imageUrl) return;
     const a = document.createElement('a');
@@ -159,134 +147,34 @@ export class ImagePageComponent {
     this.mailSuccess = false;
   }
 
-  openMmsPopup() {
-    this.showMmsPopup = true;
-    this.mmsPhoneNumber = '';
-    this.mmsError = '';
-    this.mmsSuccess = false;
-  }
-
-  closeMmsPopup() {
-    this.showMmsPopup = false;
-    this.mmsPhoneNumber = '';
-    this.mmsError = '';
-    this.mmsSuccess = false;
-  }
-
-  async sendMailOrSms() {
+  async sendMail() {
     this.mailError = '';
     this.mailSuccess = false;
-    const hasMail = this.mailAddress && this.mailAddress.match(/^\S+@\S+\.\S+$/);
-    const hasPhone = this.phoneNumber && this.phoneNumber.match(/^\+?\d{8,15}$/);
-    if (!hasMail && !hasPhone) {
-      this.mailError = 'Veuillez renseigner un mail ou un numéro.';
+    const hasMail = this.mailAddress && this.mailAddress.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    if (!hasMail) {
+      this.mailError = 'Veuillez renseigner un mail.';
       return;
     }
     try {
-      if (hasMail) {
-        const res = await fetch('http://10.74.8.226:3000/send-mail', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: this.mailAddress,
-            imageUrl: this.imageUrl
-          })
-        });
-        if (!res.ok) throw new Error('Erreur lors de l\'envoi du mail');
-      }
-      if (hasPhone) {
-        const res = await fetch('http://10.74.8.226:3000/send-sms', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: this.phoneNumber,
-            imageUrl: this.imageUrl
-          })
-        });
-        if (!res.ok) throw new Error('Erreur lors de l\'envoi du SMS');
-      }
+      // Récupère le blob de l'image depuis l'URL blob:
+      const response = await fetch(this.imageUrl);
+      const blob = await response.blob();
+      // Convertit le blob en base64
+      const base64 = await this.blobToBase64(blob);
+      // Envoie à l'API
+      const res = await fetch('http://10.74.8.226:3000/send-mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: this.mailAddress,
+          imageBase64: base64
+        })
+      });
+      if (!res.ok) throw new Error('Erreur lors de l\'envoi du mail');
       this.mailSuccess = true;
       setTimeout(() => this.closeMailPopup(), 1500);
     } catch (e) {
       this.mailError = 'Erreur lors de l\'envoi.';
-    }
-  }
-
-  async sendMms() {
-    this.mmsError = '';
-    this.mmsSuccess = false;
-    if (!this.mmsPhoneNumber || !this.mmsPhoneNumber.match(/^\+?\d{8,15}$/)) {
-      this.mmsError = 'Numéro invalide.';
-      return;
-    }
-    try {
-      // 1. Récupère le blob de l'image
-      const response = await fetch(this.imageUrl);
-      let blob = await response.blob();
-      // 2. Si > 5 Mo, compresse en JPEG
-      if (blob.size > 5 * 1024 * 1024) {
-        const img = await this.blobToImage(blob);
-        blob = await this.compressImage(img, 0.8, 5 * 1024 * 1024);
-      }
-      // 3. Convertit en base64
-      const base64 = await this.blobToBase64(blob);
-      // 4. Envoie à l'API
-      const res = await fetch('http://10.74.8.226:3000/send-sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: this.mmsPhoneNumber,
-          imageBase64: base64
-        })
-      });
-      if (!res.ok) throw new Error('Erreur lors de l\'envoi du MMS');
-      this.mmsSuccess = true;
-      setTimeout(() => this.closeMmsPopup(), 1500);
-    } catch (e) {
-      this.mmsError = 'Erreur lors de l\'envoi du MMS.';
-    }
-  }
-
-  private blobToImage(blob: Blob): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(blob);
-      const img = new Image();
-      img.onload = () => {
-        URL.revokeObjectURL(url);
-        resolve(img);
-      };
-      img.onerror = reject;
-      img.src = url;
-    });
-  }
-
-  private compressImage(img: HTMLImageElement, quality: number, maxSize: number): Promise<Blob> {
-    return new Promise((resolve) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx!.drawImage(img, 0, 0);
-      let q = quality;
-      let blob: Blob;
-      const tryCompress = () => {
-        canvas.toBlob((b) => {
-          if (!b) return resolve(canvasToBlob(canvas));
-          if (b.size <= maxSize || q < 0.3) return resolve(b);
-          q -= 0.1;
-          canvas.toBlob(tryCompress, 'image/jpeg', q);
-        }, 'image/jpeg', q);
-      };
-      tryCompress();
-    });
-    function canvasToBlob(canvas: HTMLCanvasElement): Blob {
-      const data = canvas.toDataURL('image/jpeg', 0.7);
-      const arr = data.split(',');
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) u8arr[n] = bstr.charCodeAt(n);
-      return new Blob([u8arr], { type: 'image/jpeg' });
     }
   }
 

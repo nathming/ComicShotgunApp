@@ -133,7 +133,7 @@ export class ImagePageComponent {
 
   shareOnInstagram() {
     // À personnaliser selon l'intégration souhaitée
-    window.open('https://www.instagram.com/', '_blank');
+    window.open('https://www.instagram.com/comicshotgun/', '_blank');
   }
 
   shareOnReddit() {
